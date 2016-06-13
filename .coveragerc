@@ -1,0 +1,3 @@
+[run]
+source = assignment_aa
+omit = assignment_aa/test*
