@@ -3,7 +3,7 @@ body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
   color: #ffffff;
-  background: #bc2131;
+  background: rgba(68, 32, 35, 0.61);
 }
 h1,
 h2,
@@ -152,3 +152,7 @@ p {
     margin-top: 20px;
   }
 }
+form .alert {
+    padding: 3px;
+}
+
