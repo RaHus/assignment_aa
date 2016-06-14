@@ -11,12 +11,10 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 requires = [
     'pyramid',
     'pyramid_jinja2',
-    'pyramid_debugtoolbar',
     'pyramid_tm',
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',
-    'waitress',
     'colander',
     'pyramid_mailer'
     ]
@@ -26,6 +24,12 @@ tests_require = [
     'pytest',  # includes virtualenv
     'pytest-cov',
     ]
+
+dev_require = [
+    'waitress',
+    'pyramid_debugtoolbar',
+    'IPython'
+]
 
 setup(name='assignment_aa',
       version='0.0',
@@ -46,6 +50,7 @@ setup(name='assignment_aa',
       zip_safe=False,
       extras_require={
           'testing': tests_require,
+          'development': dev_require
       },
       install_requires=requires,
       entry_points="""\
