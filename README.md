@@ -28,11 +28,18 @@ Getting Started
 ---------------
 - Activate your environment
 
-- cd <directory containing this file>
+- git clone git@github.com:RaHus/assignment_aa.git
 
-- $VENV/bin/pip install -e .[testing]
+- cd assignment_aa
+
+- $VENV/bin/pip install -e .[dev,testing]
 
 - $VENV/bin/initialize_assignment_aa_db development.ini
 
 - $VENV/bin/pserve development.ini
+
+development.ini vs production.ini
+---------------------------------
+When serving with `development.ini` the resulting mail reports will be present under `./mail`. If you want to actually 
+send the mails use `production.ini` and substitute all relevant `mail.` options (tested for gmail accounts)
 
