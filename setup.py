@@ -17,7 +17,7 @@ requires = [
     'transaction',
     'zope.sqlalchemy',
     'waitress',
-    'colander'
+    'colander',
     'pyramid_mailer'
     ]
 
