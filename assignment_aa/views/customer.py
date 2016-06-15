@@ -67,8 +67,9 @@ class CustomerFormView(object):
             self.db.refresh(customer)
             return customer
         except exc.IntegrityError as e:
+            print(e.args)
             field = e.args[0].split(':')[1].split('.')[1]
-            errors = {field: ' This is an already registered value'}
+            errors = {field: 'This is an already registered value'}
             transaction.abort()
             raise ValidationFailure(errors)
         except exc.SQLAlchemyError as e:
