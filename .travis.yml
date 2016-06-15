@@ -7,6 +7,6 @@ python:
   - "3.4"
 # command to install dependencies
 install:
-  - pip install .[testing]
+  - pip install -e .[testing]
 # command to run tests
 script: py.test assignment_aa/tests.py
