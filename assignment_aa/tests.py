@@ -69,7 +69,7 @@ class TestCustomerFormSuccessCondition(BaseTest):
         self.assertTrue(info.get('const', False))
 
     def test_model_repr(self):
-        self.assertIn("<Customer", self.model.__repr__())
+        self.assertTrue("<Customer" in self.model.__repr__())
 
 
 class CustomerFunctionalTests(BaseTest):
@@ -87,15 +87,15 @@ class CustomerFunctionalTests(BaseTest):
 
     def test_home(self):
         res = self.testapp.get('/', status=200)
-        self.assertIn(b'<p class="lead">Welcome to <span class="font-normal">assignment_aa</span>', res.body)
+        self.assertTrue(b'<p class="lead">Welcome to <span class="font-normal">assignment_aa</span>' in res.body)
 
     def test_fails_404_view(self):
         res = self.testapp.get('/invalid', status=404)
-        self.assertIn(b'404</span> Page Not Found', res.body)
+        self.assertTrue(b'404</span> Page Not Found' in res.body)
 
     def test_form_view(self):
         res = self.testapp.get('/form', status=200)
-        self.assertIn(b'<form method="POST" action="form">', res.body)
+        self.assertTrue(b'<form method="POST" action="form">' in res.body)
 
     def test_fails_validation_form_post(self):
         data = {b'name': 'test0'*10,
