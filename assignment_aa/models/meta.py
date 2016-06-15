@@ -27,6 +27,8 @@ class BaseCls(object):
     def __repr__(self):
         cols = [(c[0], getattr(self, c[0])) for c in self.__table__.columns.items() if c[1].unique]
         template = "<%s id=%s "+("%s=%s "*len(cols))[:-1]+">"
-        return template % (self.__class__.__name__, self.id, *[c for tup in cols for c in tup])
+        args = [self.__class__.__name__, self.id]
+        args.extend([c for tup in cols for c in tup])
+        return template % tuple(args)
 
 Base = declarative_base(metadata=metadata, cls=BaseCls)
