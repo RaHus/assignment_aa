@@ -34,15 +34,30 @@ class Customer(Base):
     )
 
 
+@colander.deferred
+def sa_uniquefield(node, kw):
+    """ Validates that a value for an sqlalchemy field is unique"""
+    request = kw.get('request')
+
+    def validate(node, value):
+        q = request.dbsession.query(Customer).filter(getattr(Customer, node.name) == value)
+        if q.first():
+            node.raise_invalid("This value already exists")
+    validators = [colander.Length(max=getattr(CusConst,node.name.upper()+'_LEN'))]
+    if node.name == "email":
+        validators.append(colander.Email())
+    validators.append(validate)
+    return colander.All(*validators)
+
+
 class CustomerSchema(colander.MappingSchema):
     """ A schema for validating customer data"""
     name = colander.SchemaNode(colander.String(),
-                               validator=colander.Length(max=CusConst.NAME_LEN),
+                               validator=sa_uniquefield,
                                name="name")
     email = colander.SchemaNode(colander.String(),
-                                validator=colander.All(
-                                          colander.Length(max=CusConst.EMAIL_LEN),
-                                          colander.Email())
+                                validator=sa_uniquefield,
+                                name="email"
                                 )
     contract_type = colander.SchemaNode(colander.String(),
                                         validator=colander.OneOf(CusConst.CONTRACT_TYPE_ENUM))

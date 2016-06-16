@@ -25,7 +25,7 @@ class CustomerFormView(object):
         self.request = request
         self.db = self.request.dbsession
         self.notify = self.request.registry.notify
-        self.schema = CustomerSchema()
+        self.schema = CustomerSchema().bind(request=request)
         self.model = Customer
 
     @view_config(request_method='GET', renderer='../templates/customer.jinja2')
@@ -66,12 +66,6 @@ class CustomerFormView(object):
             self.db.flush()
             self.db.refresh(customer)
             return customer
-        except exc.IntegrityError as e:
-            print(e.args)
-            field = e.args[0].split(':')[1].split('.')[1]
-            errors = {field: 'This is an already registered value'}
-            transaction.abort()
-            raise ValidationFailure(errors)
         except exc.SQLAlchemyError as e:
             transaction.abort()
             raise DatabaseFailure(str(e))

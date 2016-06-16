@@ -123,4 +123,5 @@ class CustomerFunctionalTests(BaseTest):
                 b'contract_type': 'One Time'}
         self.testapp.post('/form', data, status=200)
         res = self.testapp.post('/form', data, status=400)
+        print(res.body)
         self.assertIn(b'errors', res.body)
