@@ -1,4 +1,7 @@
 import unittest
+from unittest.mock import MagicMock
+from sqlalchemy import exc
+
 import transaction
 
 from pyramid import testing
@@ -6,8 +9,8 @@ from pyramid import testing
 from assignment_aa.models import Customer
 
 
-def dummy_request(dbsession):
-    return testing.DummyRequest(dbsession=dbsession)
+def dummy_request(dbsession, **kw):
+    return testing.DummyRequest(dbsession=dbsession, **kw)
 
 
 class BaseTest(unittest.TestCase):
@@ -68,6 +71,27 @@ class TestCustomerFormSuccessCondition(BaseTest):
         info = classview.customer_form()
         self.assertTrue(info.get('const', False))
 
+    def test_failing_view(self):
+        from .views.customer import CustomerFormView, DatabaseFailure
+        req = testing.DummyRequest(dbsession=self.session, exception=DatabaseFailure('test'))
+        classview = CustomerFormView(req)
+        info = classview.failed_database()
+        self.assertTrue('errors' in info)
+
+    def test_failing_db_view(self):
+        from .views.customer import CustomerFormView, DatabaseFailure
+        params = {'name': 'test',
+                  'email': 'test@test.local',
+                  'customer_type': 'Direct',
+                  'contract_type': 'One Time'}
+        req = testing.DummyRequest(dbsession=self.session, params=params)
+        classview = CustomerFormView(req)
+
+        with unittest.mock.patch.object(classview.db, 'flush') as flushMock:
+            flushMock.side_effect = exc.DatabaseError('', '', '')
+            with self.assertRaises(exc.SQLAlchemyError):
+                classview.customer_form_save()
+
     def test_model_repr(self):
         self.assertTrue("<Customer" in self.model.__repr__())
 
@@ -123,5 +147,4 @@ class CustomerFunctionalTests(BaseTest):
                 b'contract_type': 'One Time'}
         self.testapp.post('/form', data, status=200)
         res = self.testapp.post('/form', data, status=400)
-        print(res.body)
         self.assertIn(b'errors', res.body)
