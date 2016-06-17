@@ -3,6 +3,7 @@ branch = True
 source = assignment_aa
 omit = assignment_aa/test*
        assignment_aa/script*
+       setup.py
 
 
 [report]
@@ -14,3 +15,4 @@ exclude_lines =
 ignore_errors = True
 omit = assignment_aa/test*
        assignment_aa/script*
+       setup.py
