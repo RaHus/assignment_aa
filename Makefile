@@ -1,5 +1,5 @@
 dev-install:
-        [[ -z $VIRTUAL_ENV ]] && echo not a virtualenv && exit 1
+	[[ -z $VIRTUAL_ENV ]] && echo not a virtualenv && exit 1
 	pip install -e .[dev,testing]
 install:
 	pip install -e .
