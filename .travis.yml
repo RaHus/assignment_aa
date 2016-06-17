@@ -6,7 +6,7 @@ install:
   - pip install codecov
   - pip install -e .[testing]
 # command to run tests
-script: py.test assignment_aa/tests.py
+script: py.test --cov=./ assignment_aa/tests.py
 #codecov.io
 after_success:
   - codecov
