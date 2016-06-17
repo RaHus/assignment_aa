@@ -23,7 +23,6 @@ class CusConst(object):
 
 class Customer(Base):
     """ A mapper for the customer table"""
-    id = Column(Integer, primary_key=True)
     name = Column(Unicode(CusConst.NAME_LEN), unique=True)
     email = Column(Unicode(CusConst.EMAIL_LEN), unique=True)
     contract_type = Column(Enum(*CusConst.CONTRACT_TYPE_ENUM), nullable=False)
@@ -36,14 +35,16 @@ class Customer(Base):
 
 @colander.deferred
 def sa_uniquefield(node, kw):
-    """ Validates that a value for an sqlalchemy field is unique"""
+    """ Validates that a value for an sqlalchemy field is unique
+        Uses SchemaNode.name as fieldname.
+    """
     request = kw.get('request')
 
     def validate(node, value):
         q = request.dbsession.query(Customer).filter(getattr(Customer, node.name) == value)
         if q.first():
             node.raise_invalid("This value already exists")
-    validators = [colander.Length(max=getattr(CusConst,node.name.upper()+'_LEN'))]
+    validators = [colander.Length(max=getattr(CusConst, node.name.upper()+'_LEN'))]
     if node.name == "email":
         validators.append(colander.Email())
     validators.append(validate)
