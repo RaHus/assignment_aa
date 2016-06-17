@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/RaHus/assignment_aa.svg?branch=master)](https://travis-ci.org/RaHus/assignment_aa)
-
+[![codecov](https://codecov.io/gh/RaHus/assignment_aa/branch/master/graph/badge.svg)](https://codecov.io/gh/RaHus/assignment_aa)
 assignment_aa README
 ====================
 A form web application in Python Pyramid framework where the customer fills in the following fields:
