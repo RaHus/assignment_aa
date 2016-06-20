@@ -1,4 +1,4 @@
-import os
+import os, sys
 
 from setuptools import setup, find_packages
 
@@ -7,6 +7,8 @@ with open(os.path.join(here, 'README.md')) as f:
     README = f.read()
 with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
+
+pyver = sys.version_info.major
 
 requires = [
     'pyramid',
@@ -30,6 +32,9 @@ dev_require = [
     'pyramid_debugtoolbar',
     'IPython'
 ]
+
+if pyver == 2:
+    tests_require.append("Mock")
 
 setup(name='assignment_aa',
       version='0.0',
