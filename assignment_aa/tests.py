@@ -1,8 +1,8 @@
 import unittest
 try:
-    from unittest.mock import MagicMock
+    from unittest.mock import MagicMock, patch
 except ImportError:
-    from mock import MagicMock
+    from mock import MagicMock, patch
 
 from sqlalchemy import exc
 
@@ -89,7 +89,7 @@ class TestCustomerFormSuccessCondition(BaseTest):
         req = testing.DummyRequest(dbsession=self.session, params=params)
         classview = CustomerFormView(req)
 
-        with unittest.mock.patch.object(classview.db, 'flush') as flushMock:
+        with patch.object(classview.db, 'flush') as flushMock:
             flushMock.side_effect = exc.DatabaseError('', '', '')
             with self.assertRaises(exc.SQLAlchemyError):
                 classview.customer_form_save()

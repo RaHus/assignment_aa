@@ -8,7 +8,7 @@ with open(os.path.join(here, 'README.md')) as f:
 with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
-pyver = sys.version_info.major
+pyver = sys.version_info[0]
 
 requires = [
     'pyramid',
