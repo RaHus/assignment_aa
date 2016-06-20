@@ -1,12 +1,14 @@
 import unittest
-from unittest.mock import MagicMock
+try:
+    from unittest.mock import MagicMock
+except ImportError:
+    from mock import MagicMock
+
 from sqlalchemy import exc
 
 import transaction
 
 from pyramid import testing
-
-from assignment_aa.models import Customer
 
 
 def dummy_request(dbsession, **kw):
