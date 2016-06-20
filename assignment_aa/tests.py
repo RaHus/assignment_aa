@@ -91,8 +91,8 @@ class TestCustomerFormSuccessCondition(BaseTest):
 
         with patch.object(classview.db, 'flush') as flushMock:
             flushMock.side_effect = exc.DatabaseError('', '', '')
-            with self.assertRaises(exc.SQLAlchemyError):
-                classview.customer_form_save()
+            self.assertRaises(exc.SQLAlchemyError,
+                              classview.customer_form_save)
 
     def test_model_repr(self):
         self.assertTrue("<Customer" in self.model.__repr__())
@@ -130,9 +130,9 @@ class CustomerFunctionalTests(BaseTest):
                 b'contract_type': 'invalid'}
         res = self.testapp.post('/form', data, status=400)
 
-        self.assertIn(b'errors', res.body)
+        self.assertTrue(b'errors' in res.body)
         for key in data:
-            self.assertIn(key, res.body)
+            self.assertTrue(key in res.body)
 
     def test_successfull_form_post(self):
         data = {b'name': 'test',
@@ -140,7 +140,7 @@ class CustomerFunctionalTests(BaseTest):
                 b'customer_type': 'Direct',
                 b'contract_type': 'One Time'}
         res = self.testapp.post('/form', data, status=200)
-        self.assertIn(b'message', res.body)
+        self.assertTrue(b'message' in res.body)
 
     def test_fails_form_post(self):
         data = {b'name': 'test',
@@ -149,4 +149,4 @@ class CustomerFunctionalTests(BaseTest):
                 b'contract_type': 'One Time'}
         self.testapp.post('/form', data, status=200)
         res = self.testapp.post('/form', data, status=400)
-        self.assertIn(b'errors', res.body)
+        self.assertTrue(b'errors' in res.body)
