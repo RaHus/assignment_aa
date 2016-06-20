@@ -66,7 +66,7 @@ class CustomerFormView(object):
             self.db.flush()
             self.db.refresh(customer)
             return customer
-        except exc.SQLAlchemyError as e:
+        except exc.SQLAlchemyError as e:  # pragma: no cover
             transaction.abort()
             raise DatabaseFailure(str(e))
 
